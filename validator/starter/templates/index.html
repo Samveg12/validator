@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect To SnowFlake</title>
+</head>
+<body>
+    <h1>Welcome to the Validator</h1>
+    <form
+      action="http://localhost:5000/query"
+      method="POST"
+      enctype = "multipart/form-data">
+      <!-- <input type="file" name="file" /> -->
+      <label for="uname">username</label>
+      <input id= "uname"  type="text" name="username"/>
+      <label for="db">database</label>
+      <input id= "db"  type="text" name="database"/>
+      <label for="sc">schema</label>
+      <input id="sc"  type="text" name="schema"/>
+      <label for="tb">table</label>
+      <input id="tb"  type="text" name="table"/>
+      <input type = "file" name = "file" />
+      <input type="submit" />
+    </form>
+</body>
+</html>
