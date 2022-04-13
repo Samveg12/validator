@@ -13,4 +13,4 @@ def inital(request):
         schema = request.POST.get('schema')
         table = request.POST.get('table')
         sf_connector(username, database, schema, table)
-    return render(request, 'index.html')
+    return render(request, 'query.html')
