@@ -1,6 +1,11 @@
 <form action="/Test/" enctype="multipart/form-data" method="POST" id="myform">{% csrf_token %}
     <h2>REGISTER FORM</h2>
     {{ form1.as_p }}
+    {{ form2.as_p }}
+    {{ form3.as_p }}
+
+    
+
     <div>
         <input  type="submit" name="submit" class="register" value="Submit">
     </div>

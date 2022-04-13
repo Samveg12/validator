@@ -1,10 +1,11 @@
 from random import choices
 from ssl import ALERT_DESCRIPTION_ACCESS_DENIED
-from django.forms import modelform_factory
+from django.forms import modelform_factory, modelformset_factory
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from calendar import c
 from django.forms import formset_factory
+from functools import partial, wraps
 
 from filecmp import cmp
 import pandas as pd
@@ -75,11 +76,6 @@ def index(request):
                     # print(cur.description)
                     df = pd.DataFrame(dat, columns=columns)
                     result=df.columns.values.tolist()
-                    
-                    
-                    
-        
-
                     rows += df.shape[0]
             except:
                 print("error")
@@ -88,12 +84,18 @@ def index(request):
 
 
             # print(result)
-            for i in range(1,len(result)+1):
+            s=[]
+            for i in range(0,len(result)):
+                s.append(result[i])
+            s=sorted(s)
+
+            for i in range(1,len(s)+1):
                 z=[]
                 z.append(str(i))
-                z.append(str(result[i-1]))
+                z.append(str(s[i-1]))
                 z=tuple(z)
                 final.append(z)
+            final=sorted(final)
             final=tuple(final)
             df.to_csv('SF_PREVIEW.csv', index=False)
 
@@ -109,8 +111,14 @@ def detail(request):
     global num_kpis
     global num_filter
     global final
-    form1=Filter(choices=final)
-    Filterset=formset_factory(form1,extra=num_filter)
+    print(final)
+    # ServiceFormSet = formset_factory(wraps(ServiceForm)(partial(ServiceForm, affiliate=request.affiliate)), extra=3)
+
+    Filterset=formset_factory(wraps(Filter)(partial(Filter, choices=final)), extra=num_filter)
+    # ServiceFormSet = formset_factory(wraps(ServiceForm)(partial(ServiceForm, affiliate=request.affiliate)), extra=3)
+
+    Levelset=formset_factory(wraps(Level)(partial(Level, choices=final)), extra=num_filter)
+    KPIset=formset_factory(wraps(KPIs)(partial(KPIs, choices=final)), extra=num_filter)
     # KPIset=formset_factory(KPIs(choices=final),extra=num_kpis)
     # Levelset=formset_factory(Level(choices=final),extra=num_filter)
 
@@ -118,7 +126,7 @@ def detail(request):
 
 
 
-    return render(request,"Test/detail.html",{"form1":Filterset})
+    return render(request,"Test/detail.html",{"form1":Filterset,"form2":Levelset,'form3':KPIset})
     # if request.method ==  "POST":
     #     form = Credentials(request.POST)
     #     print(form)
