@@ -1,13 +1,14 @@
 <form action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform">{% csrf_token %}
-    <h2>REGISTER FORM</h2>
-    {{ form1.as_p }}
+    <h2>Generate Snowflake Report</h2>
     {{ form2.as_p }}
     {{ form3.as_p }}
+    {{ form1.as_p }}
     {{ form4.as_p }}
 
     
 
     <div>
         <input  type="submit" name="submit" class="register" value="Submit">
+        <input type="reset" name="clear" class="clear" value="Clear">
     </div>
 </form>
