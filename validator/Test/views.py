@@ -114,7 +114,7 @@ def index(request):
                 z=tuple(z)
                 dicti[str(i)]=str(s[i-1])
                 final.append(z)
-            final=sorted(final)
+            final.sort(key = lambda x: x[1])
             final=tuple(final)
             df.to_csv('SF_PREVIEW.csv', index=False)
 
