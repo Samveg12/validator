@@ -68,24 +68,25 @@ def index(request):
                     user=username,
                     account = "colgatepalmolivedev.us-central1.gcp",
                     authenticator = "externalbrowser",
-                    password= passwordd,
+                    # password= passwordd,
                     warehouse = "DEVELOPER_WH",
                     database= databasee,
                     schema= schemaa,
                 )
+                print("Connecting")
                 cur = con.cursor()
-
+                print(cur)
                 # STEP 2: Displaying Preview of Table
 
                 preview_query = "SELECT * FROM " + table + " LIMIT 10 "
-                # print(preview_query)
+                print(preview_query)
                 cur.execute(preview_query)
                 columns = []
                 for val in cur.description:
                     columns.append(val[0])
                 rows = 0
                 while True:
-                    # print("Inside while")
+                    print("Inside while")
                     dat = cur.fetchall()
                     if not dat:
                         break
@@ -168,7 +169,7 @@ def detail(request):
         if formi1.is_valid() and formi2.is_valid() and formi3.is_valid():
             
             print(len(formi1))
-            for i in range(0,len(formi1)-1):
+            for i in range(0,len(formi1)):
                 cd=formi1[i].cleaned_data
                 print("====")
                 print(type(cd.get('filter_parameter')))
@@ -176,7 +177,7 @@ def detail(request):
                 filter_param.append(dicti[str(cd.get('filter_parameter'))])
                 filter_cri.append(cd.get('filter_criteria'))
                 filter_val.append(cd.get('filter_value'))
-            for f in range (0,len(formi2)-1):
+            for f in range (0,len(formi2)):
                 cd=formi2[f].cleaned_data
                 levels.append(dicti[str(cd.get('levels'))])
             for f in range(0,len(formi3)):
@@ -184,6 +185,7 @@ def detail(request):
                 kpi_name.append(dicti[str(cd.get('kpi'))])
                 kpi_aggregation.append(cd.get('aggregation'))
             sql_query="SELECT "
+            print(levels)
             sql_query += '"'+levels[0]+'"'
             for i in range(1,len(levels)):
                 sql_query += "," + '"'+i+'"'
@@ -212,6 +214,7 @@ def detail(request):
                 cur = con.cursor()
 
                 cur.execute(sql_query)
+                print("QUERY EXECUTED")
                 columns = []
                 for val in cur.description:
                     columns.append(val[0])
