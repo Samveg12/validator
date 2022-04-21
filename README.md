@@ -8,4 +8,4 @@
 
 3. Run the command ``pip install -r requirements.txt`` to download necessary dependencies
 
-4. To launch the application, run ``python manage.py runserver``. By default, it will be launched at localhost://3000
+4. To launch the application, run ``python manage.py runserver``. By default, it will be launched at http://127.0.0.1:8000/
