@@ -6,6 +6,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.forms import formset_factory
 from functools import partial, wraps
+import os
 
 from filecmp import cmp
 import pandas as pd
@@ -403,11 +404,32 @@ def detail(request):
             df_output.to_excel("result.xlsx", index=False)
 
             print("Result saved as result.xlsx")   
+        # print(os.path.basename)
+        # path = 'validator/validator/result.xlsx' # this should live elsewhere, definitely
+        # if os.path.exists(path):
+        #     with open(path, "r") as excel:
+        #         data = excel.read()
+        print(os.path.dirname('result.xlsx'))
+        # content = open("../result.xlsx").read()
+        # return HttpResponse(content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response['Content-Disposition'] = 'attachment; filename=%s_Report.xlsx' % id
+        # return response
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'result.xlsx')
+        # response = HttpResponse(open(file_path, 'rb').read())
+        # response = HttpResponse(response, mimetype='application/vnd.ms-excel')
+        # response['Content-Disposition'] = 'attachment; filename="test.xls"'
 
-        
+        # path = './%s_Report.xlsx' % id # this should live elsewhere, definitely
+        if os.path.exists(file_path):
+            with open(file_path, "rb") as excel:
+                data = excel.read()
 
-
-        return(HttpResponse("Success"))
+        response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=result.xlsx'
+        return response
+        return response
+        # return(HttpResponse("Success"))
     else:
 
 
