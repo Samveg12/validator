@@ -6,6 +6,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.forms import formset_factory
 from functools import partial, wraps
+import os
 
 from filecmp import cmp
 import pandas as pd
@@ -68,24 +69,25 @@ def index(request):
                     user=username,
                     account = "colgatepalmolivedev.us-central1.gcp",
                     authenticator = "externalbrowser",
-                    password= passwordd,
+                    # password= passwordd,
                     warehouse = "DEVELOPER_WH",
                     database= databasee,
                     schema= schemaa,
                 )
+                print("Connecting")
                 cur = con.cursor()
-
+                print(cur)
                 # STEP 2: Displaying Preview of Table
 
                 preview_query = "SELECT * FROM " + table + " LIMIT 10 "
-                # print(preview_query)
+                print(preview_query)
                 cur.execute(preview_query)
                 columns = []
                 for val in cur.description:
                     columns.append(val[0])
                 rows = 0
                 while True:
-                    # print("Inside while")
+                    print("Inside while")
                     dat = cur.fetchall()
                     if not dat:
                         break
@@ -113,7 +115,7 @@ def index(request):
                 z=tuple(z)
                 dicti[str(i)]=str(s[i-1])
                 final.append(z)
-            final=sorted(final)
+            final.sort(key = lambda x: x[1])
             final=tuple(final)
             df.to_csv('SF_PREVIEW.csv', index=False)
 
@@ -168,7 +170,7 @@ def detail(request):
         if formi1.is_valid() and formi2.is_valid() and formi3.is_valid():
             
             print(len(formi1))
-            for i in range(0,len(formi1)-1):
+            for i in range(0,len(formi1)):
                 cd=formi1[i].cleaned_data
                 print("====")
                 print(type(cd.get('filter_parameter')))
@@ -176,7 +178,7 @@ def detail(request):
                 filter_param.append(dicti[str(cd.get('filter_parameter'))])
                 filter_cri.append(cd.get('filter_criteria'))
                 filter_val.append(cd.get('filter_value'))
-            for f in range (0,len(formi2)-1):
+            for f in range (0,len(formi2)):
                 cd=formi2[f].cleaned_data
                 levels.append(dicti[str(cd.get('levels'))])
             for f in range(0,len(formi3)):
@@ -184,6 +186,7 @@ def detail(request):
                 kpi_name.append(dicti[str(cd.get('kpi'))])
                 kpi_aggregation.append(cd.get('aggregation'))
             sql_query="SELECT "
+            print(levels)
             sql_query += '"'+levels[0]+'"'
             for i in range(1,len(levels)):
                 sql_query += "," + '"'+i+'"'
@@ -212,6 +215,7 @@ def detail(request):
                 cur = con.cursor()
 
                 cur.execute(sql_query)
+                print("QUERY EXECUTED")
                 columns = []
                 for val in cur.description:
                     columns.append(val[0])
@@ -400,11 +404,32 @@ def detail(request):
             df_output.to_excel("result.xlsx", index=False)
 
             print("Result saved as result.xlsx")   
+        # print(os.path.basename)
+        # path = 'validator/validator/result.xlsx' # this should live elsewhere, definitely
+        # if os.path.exists(path):
+        #     with open(path, "r") as excel:
+        #         data = excel.read()
+        print(os.path.dirname('result.xlsx'))
+        # content = open("../result.xlsx").read()
+        # return HttpResponse(content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        # response['Content-Disposition'] = 'attachment; filename=%s_Report.xlsx' % id
+        # return response
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'result.xlsx')
+        # response = HttpResponse(open(file_path, 'rb').read())
+        # response = HttpResponse(response, mimetype='application/vnd.ms-excel')
+        # response['Content-Disposition'] = 'attachment; filename="test.xls"'
 
-        
+        # path = './%s_Report.xlsx' % id # this should live elsewhere, definitely
+        if os.path.exists(file_path):
+            with open(file_path, "rb") as excel:
+                data = excel.read()
 
-
-        return(HttpResponse("Success"))
+        response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=result.xlsx'
+        return response
+        return response
+        # return(HttpResponse("Success"))
     else:
 
 
