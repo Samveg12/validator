@@ -166,17 +166,22 @@ def detail(request):
         filter_param=[]
         filter_cri=[]
         filter_val=[]
+        fil_dic={1:'>',2:'<',3:"like",4:"between",5:"=",6:">=",7:'<='}
         if formi1.is_valid() and formi2.is_valid() and formi3.is_valid():
             
             print(len(formi1))
             for i in range(0,len(formi1)):
                 cd=formi1[i].cleaned_data
-                print("====")
-                print(type(cd.get('filter_parameter')))
-                print(cd.get('filter_parameter'))
+                # print("====")
+                # print(type(cd.get('filter_parameter')))
+                # print(cd.get('filter_parameter'))
                 filter_param.append(dicti[str(cd.get('filter_parameter'))])
-                filter_cri.append(cd.get('filter_criteria'))
+                filter_cri.append(fil_dic[int(cd.get('filter_criteria'))])
                 filter_val.append(cd.get('filter_value'))
+            print("Yooo")
+            print(filter_cri)
+            print(filter_val)
+            print(filter_param)
             for f in range (0,len(formi2)):
                 cd=formi2[f].cleaned_data
                 levels.append(dicti[str(cd.get('levels'))])
