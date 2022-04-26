@@ -1,3 +1,4 @@
+from random import choices
 from django import forms
 
 class Credentials(forms.Form):
@@ -27,7 +28,12 @@ class KPIs(forms.Form):
 
 class Filter(forms.Form):    
     filter_parameter=forms.ChoiceField(choices=())
-    filter_criteria=forms.CharField(label='Enter criteria')
+    filter_criteria=forms.ChoiceField(choices=((1, (">")),
+                                        (2, ("<")),
+                                        (3, ("like")),
+                                        (4, ("between")),
+                                        (5, ("=")),(6, (">=")),(4, ("<="))
+                                        ),)
     filter_value=forms.CharField(label='Enter value')
     def __init__(self,choices, *args, **kwargs):
         filter_parameter_choices = kwargs.pop('filter_parameter_choices', ())
