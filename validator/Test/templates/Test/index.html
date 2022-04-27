@@ -10,9 +10,13 @@
             var div = document.createElement('div');
             var img = document.createElement('img');
             img.src = '/media/loading.gif';
+            img.style = 'height: 420px; width: 420px'
+            var title = document.createElement('h4');
+            title.innerText = "Authenticating your Snowflake Connection"
             // div.innerHTML = "Loading...<br />";
             div.style.cssText = 'position: fixed; top: 5%; left: 40%; z-index: 5000; width: 422px; text-align: center; background: #EDDBB0; border: 1px solid #000';
             div.appendChild(img);
+            div.appendChild(title);
             document.body.appendChild(div);
             return true;
             // These 2 lines cancel form submission, so only use if needed.

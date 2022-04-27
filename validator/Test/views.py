@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.forms import formset_factory
 from functools import partial, wraps
 import os
+import shutil
 
 from filecmp import cmp
 import pandas as pd
@@ -407,43 +408,18 @@ def detail(request):
                 df_output["differ"+"_{0}".format(kpi[i])]=kpi_diff
 
             df_output.to_excel("result.xlsx", index=False)
-
+            src_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'result.xlsx')
+            dst_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'media/')
+            shutil.copy(src_path, dst_path)
             print("Result saved as result.xlsx")   
-        # print(os.path.basename)
-        # path = 'validator/validator/result.xlsx' # this should live elsewhere, definitely
-        # if os.path.exists(path):
-        #     with open(path, "r") as excel:
-        #         data = excel.read()
         print(os.path.dirname('result.xlsx'))
-        # content = open("../result.xlsx").read()
-        # return HttpResponse(content, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        # response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        # response['Content-Disposition'] = 'attachment; filename=%s_Report.xlsx' % id
-        # return response
-        file_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'result.xlsx')
-        # response = HttpResponse(open(file_path, 'rb').read())
-        # response = HttpResponse(response, mimetype='application/vnd.ms-excel')
-        # response['Content-Disposition'] = 'attachment; filename="test.xls"'
-
-        # path = './%s_Report.xlsx' % id # this should live elsewhere, definitely
-        if os.path.exists(file_path):
-            with open(file_path, "rb") as excel:
-                data = excel.read()
-
-        response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=result.xlsx'
-        return response
-        return response
-        # return(HttpResponse("Success"))
+        
+        return render(request, "Test/download.html")
+        # return redirect("download")
+        return redirect("download")
+        # return    
+        # return(HttpResponse("Success"))   
     else:
-
-
-            
-
-
-
-
-
         return render(request,"Test/detail.html",{"form1":Filterset,"form2":Levelset,'form3':KPIset,'form4':Uploading})
     # if request.method ==  "POST":
     #     form = Credentials(request.POST)
@@ -455,3 +431,23 @@ def detail(request):
     #     redentialsset=formset_factory(Credentials,extra=2)
 
     #     return render(request,"Test/detail.html")
+
+def download_file(request):
+    if(request.GET.get('downbtn')):
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'result.xlsx')
+        if os.path.exists(file_path):
+            with open(file_path, "rb") as excel:
+                data = excel.read()
+
+        response = HttpResponse(data,content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=result.xlsx'
+        # render(request, "Test/download.html")
+    return response
+
+def download(request):
+
+    print("INSIDE DOWNLOAD")
+    # return download_file()
+    return render(request, "Test/download.html")
+
+

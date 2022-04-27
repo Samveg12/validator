@@ -1,4 +1,4 @@
-<form action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform">{% csrf_token %}
+<form action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform" onsubmit="ShowLoading()">{% csrf_token %}
     <h2>Generate Snowflake Report</h2>
     {{ form2.as_p }}
     {{ form3.as_p }}
@@ -11,4 +11,24 @@
         <input  type="submit" name="submit" class="register" value="Submit">
         <input type="reset" name="clear" class="clear" value="Clear">
     </div>
+
+    <script type="text/javascript">
+        function ShowLoading(e) {
+            var div = document.createElement('div');
+            var img = document.createElement('img');
+            img.src = '/media/loading.gif';
+            img.style = 'height: 420px; width: 420px'
+            var title = document.createElement('h4');
+            title.innerText = "Generating Comparison Report"
+            // div.innerHTML = "Loading...<br />";
+            div.style.cssText = 'position: fixed; top: 5%; left: 40%; z-index: 5000; width: 422px; text-align: center; background: #EDDBB0; border: 1px solid #000';
+            div.appendChild(img);
+            div.appendChild(title);
+            document.body.appendChild(div);
+            return true;
+            // These 2 lines cancel form submission, so only use if needed.
+            //window.event.cancelBubble = true;
+            //e.stopPropagation();
+        }
+    </script>
 </form>
