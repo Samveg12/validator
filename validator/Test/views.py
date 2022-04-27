@@ -27,6 +27,17 @@ final=[]
 table=""
 table_name=""
 dicti={}
+
+def append_single_quotes(input):
+    if (input[0] != "'" and input[-1] != "'"):
+        input = "'" + input + "'"
+    elif input[0] == "'" and input[-1] != "'":
+        input = input + "'"
+    elif input[0] != "'" and input[-1] == "'":
+        input = "'" + input
+    return input
+
+
 def index(request):
     global num_level
     global schemaa
@@ -179,7 +190,7 @@ def detail(request):
                 # print(cd.get('filter_parameter'))
                 filter_param.append(dicti[str(cd.get('filter_parameter'))])
                 filter_cri.append(fil_dic[int(cd.get('filter_criteria'))])
-                filter_val.append(cd.get('filter_value'))
+                filter_val.append(append_single_quotes(cd.get('filter_value')))
             print("Yooo")
             print(filter_cri)
             print(filter_val)
