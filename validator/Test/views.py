@@ -38,6 +38,15 @@ def append_single_quotes(input):
         input = "'" + input
     return input
 
+def append_double_quotes(input):
+    if ' ' in input and (input[0] != '"' and input[-1] != '"'):
+        input = '"' + input + '"'
+    elif input[0] == '"' and input[-1] != '"':
+        input = input + '"'
+    elif input[0] != '"' and input[-1] == '"':
+        input = '"' + input
+    
+    return input
 
 def index(request):
     global num_level
@@ -174,7 +183,7 @@ def detail(request):
         # print(num_level)
         if formi4.is_valid():
             filehandle = request.FILES['file']
-            sap_data=pd.read_excel(filehandle)
+            sap_data=pd.read_excel(filehandle, engine='openpyxl', sheet_name='Sheet1')
         # print(sap_data)
         # print(sap_data, sep='|',encoding='latin-1')
             # do pandas here to filehandle/ put filehandle into a function 
@@ -194,7 +203,7 @@ def detail(request):
                 # print("====")
                 # print(type(cd.get('filter_parameter')))
                 # print(cd.get('filter_parameter'))
-                filter_param.append(dicti[str(cd.get('filter_parameter'))])
+                filter_param.append(dicti[append_double_quotes(str(cd.get('filter_parameter')))])
                 filter_cri.append(fil_dic[int(cd.get('filter_criteria'))])
                 filter_val.append(append_single_quotes(cd.get('filter_value')))
             print("Yooo")
@@ -289,9 +298,13 @@ def detail(request):
                 cmp_level.append(levels[i].replace('"', ''))
             kpi_list = kpi_name
             new_kpi = []
-            for val in kpi_list:
+            # for val in kpi_list:
+            #     val = val.replace('"', '')
+            #     new_kpi.append(val)
+            for val in sap_data:
                 val = val.replace('"', '')
                 new_kpi.append(val)
+            new_kpi.pop(0)
 
             # print(new_kpi)
 
