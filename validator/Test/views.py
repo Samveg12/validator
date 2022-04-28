@@ -298,15 +298,15 @@ def detail(request):
                 cmp_level.append(levels[i].replace('"', ''))
             kpi_list = kpi_name
             new_kpi = []
-            # for val in kpi_list:
-            #     val = val.replace('"', '')
-            #     new_kpi.append(val)
-            for val in sap_data:
+            for val in kpi_list:
                 val = val.replace('"', '')
                 new_kpi.append(val)
-            # delta = num_kpis- num_level
-            for i in range(0,num_level):
-                new_kpi.pop(0)
+            # for val in sap_data:
+            #     val = val.replace('"', '')
+            #     new_kpi.append(val)
+            # # delta = num_kpis- num_level
+            # for i in range(0,num_level):
+            #     new_kpi.pop(0)
 
             # print(new_kpi)
 
