@@ -1,6 +1,7 @@
 from decimal import Decimal
 from random import choices
 from ssl import ALERT_DESCRIPTION_ACCESS_DENIED
+from sys import prefix
 from django.forms import modelform_factory, modelformset_factory
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
@@ -15,7 +16,7 @@ import snowflake.connector
 # import config
 from django.contrib import messages
 
-from .forms import Credentials,Filter,KPIs,Level,Upload
+from .forms import Credentials,Filter,KPIs,Level,Uploaded
 num_level=0
 num_kpis=0
 num_filter=0
@@ -150,22 +151,27 @@ def detail(request):
     global num_filter
     global final
     global dicti
-    print(final)
-    # ServiceFormSet = formset_factory(wraps(ServiceForm)(partial(ServiceForm, affiliate=request.affiliate)), extra=3)
 
     Filterset=formset_factory(wraps(Filter)(partial(Filter, choices=final)), extra=num_filter)
-    # ServiceFormSet = formset_factory(wraps(ServiceForm)(partial(ServiceForm, affiliate=request.affiliate)), extra=3)
 
     Levelset=formset_factory(wraps(Level)(partial(Level, choices=final)), extra=num_level)
     KPIset=formset_factory(wraps(KPIs)(partial(KPIs, choices=final)), extra=num_kpis)
-    Uploading=Upload()
-    # KPIset=formset_factory(KPIs(choices=final),extra=num_kpis)
-    # Levelset=formset_factory(Level(choices=final),extra=num_filter)
+    Uploading=Uploaded()
+
     if request.method ==  "POST":
-        formi1 = Filterset(request.POST,request.FILES)
-        formi2 = Levelset(request.POST)
-        formi3 = KPIset(request.POST)
-        formi4=Upload(request.POST, request.FILES)
+        formi1 = Filterset(request.POST,request.FILES,prefix=str(1))
+        formi2 = Levelset(request.POST,prefix=str(2))
+        formi3 = KPIset(request.POST,prefix=str(3))
+        formi4=Uploaded(request.POST, request.FILES)
+        print("hehehheheeh")
+        print(len(formi1))
+        print(len(formi2))
+        print(len(formi3))
+        # cd=formi3.cleaned_data
+        # print(cd)
+        # print(num_filter)
+        # print(num_kpis)
+        # print(num_level)
         if formi4.is_valid():
             filehandle = request.FILES['file']
             sap_data=pd.read_excel(filehandle)
@@ -182,7 +188,7 @@ def detail(request):
         fil_dic={1:'>',2:'<',3:"like",4:"between",5:"=",6:">=",7:'<='}
         if formi1.is_valid() and formi2.is_valid() and formi3.is_valid():
             
-            print(len(formi1))
+            print(len(formi2))
             for i in range(0,len(formi1)):
                 cd=formi1[i].cleaned_data
                 # print("====")
@@ -198,21 +204,33 @@ def detail(request):
             for f in range (0,len(formi2)):
                 cd=formi2[f].cleaned_data
                 levels.append(dicti[str(cd.get('levels'))])
+            print("----clean----")
+            print(len(formi1))
+            print(len(formi2))
+            print(len(formi3))
+            # cdd=formi3.cleaned_data
+            # cddd=formi2.cleaned_data
+            # cdddd=formi1.cleaned_data
+            # print(cdddd)
+            # print(cddd)
+            # print(cdd)
+            print("-----------------")
             for f in range(0,len(formi3)):
                 cd=formi3[f].cleaned_data
                 kpi_name.append(dicti[str(cd.get('kpi'))])
                 kpi_aggregation.append(cd.get('aggregation'))
+            
             sql_query="SELECT "
             print(levels)
             sql_query += '"'+levels[0]+'"'
             for i in range(1,len(levels)):
-                sql_query += "," + '"'+i+'"'
+                sql_query += "," + '"'+levels[i]+'"'
             for i in range(0,len(kpi_name)):
                 sql_query += "," + kpi_aggregation[i] + "(" + '"' +kpi_name[i] + '"' +")"
             sql_query += " FROM " + table_name
-            sql_query += " WHERE " + filter_param[0] + " " + filter_cri[0] + " " + filter_val[0]
+            sql_query += " WHERE " + '"' +filter_param[0] + '"' + " " + filter_cri[0] + " " + filter_val[0]
             for i in range(1, len(filter_param)):
-                sql_query += " AND " + filter_param[i] + " " + filter_cri[i] + " " + filter_val[i]
+                sql_query += " AND " + '"' +filter_param[i] + '"' + " " + filter_cri[i] + " " + filter_val[i]
             v=""
             for i in range(1,len(levels)+1):
                 v=v+str(i)+','
@@ -431,7 +449,10 @@ def detail(request):
         # return    
         # return(HttpResponse("Success"))   
     else:
-        return render(request,"Test/detail.html",{"form1":Filterset,"form2":Levelset,'form3':KPIset,'form4':Uploading})
+        for1=Filterset(prefix=str(1))
+        for2=Levelset(prefix=str(2))
+        for3=KPIset(prefix=str(3))
+        return render(request,"Test/detail.html",{"form1":for1,"form2":for2,'form3':for3,'form4':Uploaded})
     # if request.method ==  "POST":
     #     form = Credentials(request.POST)
     #     print(form)

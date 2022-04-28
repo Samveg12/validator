@@ -41,7 +41,7 @@ class Filter(forms.Form):
         self.fields['filter_parameter'].choices = choices
 
 
-class Upload(forms.Form):
+class Uploaded(forms.Form):
     file = forms.FileField()
     
 
