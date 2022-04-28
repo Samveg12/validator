@@ -304,7 +304,9 @@ def detail(request):
             for val in sap_data:
                 val = val.replace('"', '')
                 new_kpi.append(val)
-            new_kpi.pop(0)
+            # delta = num_kpis- num_level
+            for i in range(0,num_level):
+                new_kpi.pop(0)
 
             # print(new_kpi)
 
