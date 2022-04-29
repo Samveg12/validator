@@ -223,7 +223,7 @@ def detail(request):
             # print(cdddd)
             # print(cddd)
             # print(cdd)
-            print("-----------------")
+            # print("-----------------")
             for f in range(0,len(formi3)):
                 cd=formi3[f].cleaned_data
                 kpi_name.append(dicti[str(cd.get('kpi'))])
@@ -257,13 +257,13 @@ def detail(request):
                     schema= schemaa,
                 )
                 cur = con.cursor()
-
+                df = pd.DataFrame
                 cur.execute(sql_query)
-                print("QUERY EXECUTED")
+                # print("QUERY EXECUTED")
                 columns = []
                 for val in cur.description:
                     columns.append(val[0])
-                print(columns)
+                # print(columns)
                 rows = 0
                 while True:
                     # print("Inside while")
@@ -277,15 +277,19 @@ def detail(request):
                 cur.close()
                 print(sql_query)
             sf_data=df
-            print("=====")
-            print(sf_data)
+            # print("=====")
+            # print(sf_data)
             cols = []
             for col in sap_data:
                 cols.append(col)
             sf_data.columns = cols
 
             print('Column names in SF data')
+            i = num_level
             for col in sf_data:
+                if(i>0):
+                    sf_data[col] = sf_data[col].str.lstrip('0')
+                    i = i-1
                 print(col)
 
             print("Column names in SAP data")
@@ -298,77 +302,20 @@ def detail(request):
                 cmp_level.append(levels[i].replace('"', ''))
             kpi_list = kpi_name
             new_kpi = []
-            for val in kpi_list:
-                val = val.replace('"', '')
-                new_kpi.append(val)
-            # for val in sap_data:
+            # for val in kpi_list:
             #     val = val.replace('"', '')
             #     new_kpi.append(val)
-            # # delta = num_kpis- num_level
-            # for i in range(0,num_level):
-            #     new_kpi.pop(0)
+            for val in sap_data:
+                val = val.replace('"', '')
+                new_kpi.append(val)
+            # delta = num_kpis- num_level
+            for i in range(0,num_level):
+                new_kpi.pop(0)
 
             # print(new_kpi)
 
             # print(cmp_level)
             # print(kpi)
-
-            # STEP 6
-            # Creating a new dataframe having consolidated salesorgs
-            # salesorgs = sap_data[cmp_level].to_list()
-
-            # # sf_data[cmp_level] = sf_data[cmp_level].apply(str)
-
-            # for val in sf_data[cmp_level].to_list():
-            #     if val not in salesorgs:
-            #         salesorgs.append(val)
-
-            # # print(len(salesorgs))
-            # # print(salesorgs)    
-
-            # # adding list as first column of new dataframe
-            # df_output = pd.DataFrame()
-            # df_output[cmp_level] = salesorgs 
-
-
-            # # testing for multiple KPIs
-
-            # for i in range(0,num_cols):
-            #     kpi_1 = []
-            #     sf_dict = sf_data.set_index(cmp_level).to_dict('dict')
-            #     # print(sf_dict)
-            #     for org in salesorgs:
-            #         if org not in sf_dict[new_kpi[i]].keys():
-            #             kpi_1.append(0)
-            #         else:
-            #             kpi_1.append(sf_dict[new_kpi[i]][org])
-            #     col1name = new_kpi[i] + "_sf"
-            #     df_output[col1name] = kpi_1
-            # # print(kpi_1)
-
-            # # making KPI 2 column
-            #     kpi_2 = []
-            #     sap_dict = sap_data.set_index(cmp_level).to_dict('dict')
-            #     for org in salesorgs:
-            #         if org not in sap_dict[new_kpi[i]].keys():
-            #             kpi_2.append(0)
-            #         else:
-            #             kpi_2.append(sap_dict[new_kpi[i]][org])
-            # # print(kpi_1)
-            #     col2name = new_kpi[i] + "_sap"
-            #     df_output[col2name] = kpi_2
-
-
-            # # extracting difference
-            #     diffname = 'Diff' + str(i+1)
-            #     df_output[diffname] = df_output[col1name] - df_output[col2name]
-
-
-            # # making KPI 1 column
-
-            # df_output.to_excel("result.xlsx", index=False)
-
-            # print("Result saved as result.xlsx")   
 
             #samveg
             s=num_kpis
@@ -376,10 +323,10 @@ def detail(request):
             m=cmp_level
             kpi=new_kpi
             print("=====")
-            print(s)
-            print(v)
-            print(m)
-            print(kpi)
+            # print(s)
+            # print(v)
+            # print(m)
+            # print(kpi)
 
             dicti_sap={}
             # print(sap_data.iloc[0,0])
@@ -413,15 +360,18 @@ def detail(request):
                     t.append(s)
             # print(t)
             print("=====")
-            print(orderi)
-
-                
-
+            # print(orderi)
+            print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ")
+            # print(dicti_sap.keys())
+            # print(dicti_sf.keys())
+            print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
+            # print(orderi)
+            print(kpi)
             # print(dicti_sap)
             # not_found=[]
             # for i in range(0,s):
             df_output=pd.DataFrame(t,columns=m)
-            print(df_output)
+            # print(df_output)
             for i in range(0,len(kpi)):
                 kpi1=[]
                 kpi2=[]
@@ -443,8 +393,8 @@ def detail(request):
                 # vv.append(kpi1)
                 # vv.append(kpi2)
                 # print("Yo")
-                print(kpi1)
-                print(kpi2)
+                # print(kpi1)
+                # print(kpi2)
                 # print(kpi[i])
                 # df_output.insert()
                 df_output[kpi[i]+str("_sap")]=kpi1
