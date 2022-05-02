@@ -20,7 +20,12 @@ class Level(forms.Form):
 
 class KPIs(forms.Form):
     kpi=forms.ChoiceField(choices=(), label="KPI")
-    aggregation=forms.CharField(label='Enter aggregation')
+    aggregation=forms.ChoiceField(choices=((1, ("SUM")),
+                                        (2, ("COUNT")),
+                                        (3, ("AVG")),
+                                        (4, ("MIN")),
+                                        (5, ("MAX")),
+                                        ),)
     def __init__(self,choices, *args, **kwargs):
         kpi_choices = kwargs.pop('kpi_choices', ())
         super().__init__(*args, **kwargs)

@@ -195,6 +195,7 @@ def detail(request):
         filter_cri=[]
         filter_val=[]
         fil_dic={1:'>',2:'<',3:"like",4:"between",5:"=",6:">=",7:'<='}
+        agr_dic={1:'SUM',2:'COUNT',3:"AVG",4:"MIN",5:"MAX"}
         if formi1.is_valid() and formi2.is_valid() and formi3.is_valid():
             
             print(len(formi2))
@@ -227,7 +228,7 @@ def detail(request):
             for f in range(0,len(formi3)):
                 cd=formi3[f].cleaned_data
                 kpi_name.append(dicti[str(cd.get('kpi'))])
-                kpi_aggregation.append(cd.get('aggregation'))
+                kpi_aggregation.append(agr_dic[int(cd.get('aggregation'))])
             
             sql_query="SELECT "
             print(levels)
