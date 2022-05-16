@@ -1,9 +1,54 @@
-<form action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform" onsubmit="ShowLoading()">{% csrf_token %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+    {% load crispy_forms_tags %}
+
+  <div class="container">
+    <form style="align-items: center" action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform" onsubmit="ShowLoading()">{% csrf_token %}
+        <h2>Generate Snowflake Report</h2>
+        {{ form2.as_p }}
+        {{ form3.as_p }}
+        {{ form1.as_p }}
+        {{ form4.as_p }}
+        
+        <div>
+            <input  type="submit" name="submit" class="register" value="Submit">
+        </div>
+        <script type="text/javascript">
+            function ShowLoading(e) {
+                var div = document.createElement('div');
+                var img = document.createElement('img');
+                img.src = '/media/loading.gif';
+                img.style = 'height: 420px; width: 420px'
+                var title = document.createElement('h4');
+                title.innerText = "Authenticating your Snowflake Connection"
+                // div.innerHTML = "Loading...<br />";
+                div.style.cssText = 'position: fixed; top: 5%; left: 40%; z-index: 5000; width: 422px; text-align: center; background: #EDDBB0; border: 1px solid #000';
+                div.appendChild(img);
+                div.appendChild(title);
+                document.body.appendChild(div);
+                return true;
+                // These 2 lines cancel form submission, so only use if needed.
+                //window.event.cancelBubble = true;
+                //e.stopPropagation();
+            }
+        </script>
+    </form>
+  </div>
+</body>
+</html>
+
+
+
+
+<!-- <form action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform" onsubmit="ShowLoading()">{% csrf_token %}
     <h2>Generate Snowflake Report</h2>
-    {{ form2.as_p }}
-    {{ form3.as_p }}
-    {{ form1.as_p }}
-    {{ form4.as_p }}
+    
 
     
 
@@ -31,4 +76,4 @@
             //e.stopPropagation();
         }
     </script>
-</form>
+</form> -->
