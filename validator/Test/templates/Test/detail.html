@@ -1,79 +1,125 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  {% load static %}
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Validation Portal</title>
+
+	<meta name="keywords" content="HTML5 Template" />
+	<meta name="description" content="Porto - Bootstrap eCommerce Template">
+	<meta name="author" content="SW-THEMES">
+
+	<!-- Favicon -->
+	<link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.ico">
+
+	<script type="text/javascript">
+		WebFontConfig = {
+			google: { families: [ 'Open+Sans:300,400,600,700,800','FEATURED PRODUCTS Poppins:300,400,500,600,700' ] }
+		};
+		(function(d) {
+			var wf = d.createElement('script'), s = d.scripts[0];
+			wf.src = 'assets/js/webfont.js';
+			wf.async = true;
+			s.parentNode.insertBefore(wf, s);
+		})(document);
+	</script>
+
+	<!-- Plugins CSS File -->
+	<link rel="stylesheet" href="{% static '/css/bootstrap.css'%}">
+
+	<!-- Main CSS File -->
+	<link rel="stylesheet" href="{% static '/css/file.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static '/css/fontt.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static '/css/file2.css'%}">
+	<!-- Jquery -->
+	<link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/site-demos.css">
+	<!-- Main Style Css -->
+    <link rel="stylesheet" href="{% static '/css/line.css'%}"/>
+	<link rel="stylesheet" type="text/css" href="{% static '/css/all.min.css'%}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 </head>
-<body>
-    {% load crispy_forms_tags %}
+<body class="full-screen-slider">
+<div class="page-content">
+    <div class="form-v4-content">
+        <form class="form-detail" action="/" enctype="multipart/form-data" method="POST" id="myform">{% csrf_token %}
+            <h2>SNOWFLAKE VALIDATION</h2>
+			{{ form2.as_p }}
+			<div class="row">
+				<div class="col-md-6">
+					{{ form1.as_p }}
 
-  <div class="container">
-    <form style="align-items: center" action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform" onsubmit="ShowLoading()">{% csrf_token %}
-        <h2>Generate Snowflake Report</h2>
-        {{ form2.as_p }}
-        {{ form3.as_p }}
-        {{ form1.as_p }}
-        {{ form4.as_p }}
-        
-        <div>
-            <input  type="submit" name="submit" class="register" value="Submit">
-        </div>
-        <script type="text/javascript">
-            function ShowLoading(e) {
-                var div = document.createElement('div');
-                var img = document.createElement('img');
-                img.src = '/media/loading.gif';
-                img.style = 'height: 420px; width: 420px'
-                var title = document.createElement('h4');
-                title.innerText = "Authenticating your Snowflake Connection"
-                // div.innerHTML = "Loading...<br />";
-                div.style.cssText = 'position: fixed; top: 5%; left: 40%; z-index: 5000; width: 422px; text-align: center; background: #EDDBB0; border: 1px solid #000';
-                div.appendChild(img);
-                div.appendChild(title);
-                document.body.appendChild(div);
-                return true;
-                // These 2 lines cancel form submission, so only use if needed.
-                //window.event.cancelBubble = true;
-                //e.stopPropagation();
-            }
-        </script>
-    </form>
-  </div>
-</body>
-</html>
+				</div>
+				<div class="col-md-6">
+					{{ form3.as_p }}
+				</div>
 
+			</div>
+			
 
-
-
-<!-- <form action="/Test/detail" enctype="multipart/form-data" method="POST" id="myform" onsubmit="ShowLoading()">{% csrf_token %}
-    <h2>Generate Snowflake Report</h2>
-    
-
-    
-
-    <div>
-        <input  type="submit" name="submit" class="register" value="Submit">
-        <input type="reset" name="clear" class="clear" value="Clear">
+            
+            
+            
+            {{ form4.as_p }}
+            <div  class="form-row-last">
+                <input  type="submit" name="sudmit" class="register" value="Sudmit">
+            </div>
+        </form>
     </div>
+</div>
 
-    <script type="text/javascript">
-        function ShowLoading(e) {
-            var div = document.createElement('div');
-            var img = document.createElement('img');
-            img.src = '/media/loading.gif';
-            img.style = 'height: 420px; width: 420px'
-            var title = document.createElement('h4');
-            title.innerText = "Generating Comparison Report"
-            // div.innerHTML = "Loading...<br />";
-            div.style.cssText = 'position: fixed; top: 5%; left: 40%; z-index: 5000; width: 422px; text-align: center; background: #EDDBB0; border: 1px solid #000';
-            div.appendChild(img);
-            div.appendChild(title);
-            document.body.appendChild(div);
-            return true;
-            // These 2 lines cancel form submission, so only use if needed.
-            //window.event.cancelBubble = true;
-            //e.stopPropagation();
-        }
-    </script>
-</form> -->
+<a id="scroll-top" href="#top" title="Top" role="button"><i class="icon-angle-up"></i></a>
+
+<!-- Plugins JS File -->
+<script src="{% static '/js/bootstrap.bundle.min.js'%}"></script>
+<script src="{% static '/js/jquery.min.js'%}"></script>
+<script src="{% static '/js/plugins.min.js'%}"></script>
+
+<!-- Main JS File -->
+<script src="{% static '/js/main.min.js'%}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+<script>
+    // just for the demos, avoids form submit
+    jQuery.validator.setDefaults({
+          debug: true,
+          success:  function(label){
+            label.attr('id', 'valid');
+            },
+    });
+    
+</script>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

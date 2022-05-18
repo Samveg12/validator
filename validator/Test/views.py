@@ -78,13 +78,13 @@ def index(request):
                 num_filter=cd.get('num_filter')
                 num_kpis=cd.get('num_kpis')
             table_name=table
-            print(passwordd)
-            print(schemaa)
-            print(databasee)
-            print(table)
-            print(num_level)
-            print(num_kpis)
-            print(num_filter)
+            # print(passwordd)
+            # print(schemaa)
+            # print(databasee)
+            # print(table)
+            # print(num_level)
+            # print(num_kpis)
+            # print(num_filter)
 
             try:
                 con = snowflake.connector.connect(
@@ -96,20 +96,20 @@ def index(request):
                     database= databasee,
                     schema= schemaa,
                 )
-                print("Connecting")
+                # print("Connecting")
                 cur = con.cursor()
-                print(cur)
+                # print(cur)
                 # STEP 2: Displaying Preview of Table
 
                 preview_query = "SELECT * FROM " + table + " LIMIT 10 "
-                print(preview_query)
+                # print(preview_query)
                 cur.execute(preview_query)
                 columns = []
                 for val in cur.description:
                     columns.append(val[0])
                 rows = 0
                 while True:
-                    print("Inside while")
+                    # print("Inside while")
                     dat = cur.fetchall()
                     if not dat:
                         break
@@ -118,9 +118,9 @@ def index(request):
                     result=df.columns.values.tolist()
                     rows += df.shape[0]
             except:
-                print("error")
+                # print("error")
                 messages.info(request,"Wrong credentails")
-                return redirect('/Test')
+                return redirect('/')
 
 
             # print(result)
@@ -141,10 +141,10 @@ def index(request):
             final=tuple(final)
             df.to_csv('SF_PREVIEW.csv', index=False)
 
-            print("PREVIEW OF TABLE SAVED IN SF_PREVIEW.csv")
+            # print("PREVIEW OF TABLE SAVED IN SF_PREVIEW.csv")
             # mail(Name,email,Country)
             return redirect('detail')
-        return redirect('/Test')
+        return redirect('/')
     
     return render(request,"Test/index.html",{"form":Credentialsset})
 
@@ -172,10 +172,10 @@ def detail(request):
         formi2 = Levelset(request.POST,prefix=str(2))
         formi3 = KPIset(request.POST,prefix=str(3))
         formi4=Uploaded(request.POST, request.FILES)
-        print("hehehheheeh")
-        print(len(formi1))
-        print(len(formi2))
-        print(len(formi3))
+        # print("hehehheheeh")
+        # print(len(formi1))
+        # print(len(formi2))
+        # print(len(formi3))
         # cd=formi3.cleaned_data
         # print(cd)
         # print(num_filter)
@@ -198,7 +198,7 @@ def detail(request):
         agr_dic={1:'SUM',2:'COUNT',3:"AVG",4:"MIN",5:"MAX"}
         if formi1.is_valid() and formi2.is_valid() and formi3.is_valid():
             
-            print(len(formi2))
+            # print(len(formi2))
             for i in range(0,len(formi1)):
                 cd=formi1[i].cleaned_data
                 # print("====")
@@ -207,17 +207,17 @@ def detail(request):
                 filter_param.append(dicti[append_double_quotes(str(cd.get('filter_parameter')))])
                 filter_cri.append(fil_dic[int(cd.get('filter_criteria'))])
                 filter_val.append(append_single_quotes(cd.get('filter_value')))
-            print("Yooo")
-            print(filter_cri)
-            print(filter_val)
-            print(filter_param)
+            # print("Yooo")
+            # print(filter_cri)
+            # print(filter_val)
+            # print(filter_param)
             for f in range (0,len(formi2)):
                 cd=formi2[f].cleaned_data
                 levels.append(dicti[str(cd.get('levels'))])
-            print("----clean----")
-            print(len(formi1))
-            print(len(formi2))
-            print(len(formi3))
+            # print("----clean----")
+            # print(len(formi1))
+            # print(len(formi2))
+            # print(len(formi3))
             # cdd=formi3.cleaned_data
             # cddd=formi2.cleaned_data
             # cdddd=formi1.cleaned_data
@@ -231,7 +231,7 @@ def detail(request):
                 kpi_aggregation.append(agr_dic[int(cd.get('aggregation'))])
             
             sql_query="SELECT "
-            print(levels)
+            # print(levels)
             sql_query += '"'+levels[0]+'"'
             for i in range(1,len(levels)):
                 sql_query += "," + '"'+levels[i]+'"'
@@ -276,7 +276,7 @@ def detail(request):
                     rows += df.shape[0]
             finally:
                 cur.close()
-                print(sql_query)
+                # print(sql_query)
             sf_data=df
             # print("=====")
             # print(sf_data)
@@ -285,15 +285,15 @@ def detail(request):
                 cols.append(col)
             sf_data.columns = cols
 
-            print('Column names in SF data')
+            # print('Column names in SF data')
             i = num_level
             for col in sf_data:
                 if(i>0):
                     sf_data[col] = sf_data[col].str.lstrip('0')
                     i = i-1
-                print(col)
+                # print(col)
 
-            print("Column names in SAP data")
+            # print("Column names in SAP data")
             for col in sap_data:
                 print(col)
 
@@ -360,14 +360,14 @@ def detail(request):
                     orderi.append(p)
                     t.append(s)
             # print(t)
-            print("=====")
+            # print("=====")
             # print(orderi)
-            print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ")
+            # print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ")
             # print(dicti_sap.keys())
             # print(dicti_sf.keys())
-            print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
+            # print("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW")
             # print(orderi)
-            print(kpi)
+            # print(kpi)
             # print(dicti_sap)
             # not_found=[]
             # for i in range(0,s):
@@ -406,8 +406,8 @@ def detail(request):
             src_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'result.xlsx')
             dst_path = os.path.join(os.path.dirname(os.path.realpath(__name__)), 'media/')
             shutil.copy(src_path, dst_path)
-            print("Result saved as result.xlsx")   
-        print(os.path.dirname('result.xlsx'))
+            # print("Result saved as result.xlsx")   
+        # print(os.path.dirname('result.xlsx'))
         
         return render(request, "Test/download.html")
         # return redirect("download")
@@ -444,7 +444,7 @@ def download_file(request):
 
 def download(request):
 
-    print("INSIDE DOWNLOAD")
+    # print("INSIDE DOWNLOAD")
     # return download_file()
     return render(request, "Test/download.html")
 
