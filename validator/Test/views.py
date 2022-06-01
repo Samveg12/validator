@@ -410,7 +410,7 @@ def detail(request):
         
         return render(request, "Test/download.html")
         # return redirect("download")
-        return redirect("download")
+        # return redirect("download")
         # return    
         # return(HttpResponse("Success"))   
     else:
